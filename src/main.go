@@ -1,13 +1,11 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/samuellfa/registerserver/src/database"
+	"github.com/samuellfa/registerserver/src/routes"
+)
 
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run()
+	database.ConnectWithDatabase()
+	routes.HandleRequest()
 }
