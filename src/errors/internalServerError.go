@@ -12,7 +12,7 @@ func NewInternalServerError(message string) *internalServerError {
 	return &internalServerError{message}
 }
 
-func (err *internalServerError) Error() string {
+func (err *internalServerError) Error() interface{} {
 	return err.message
 }
 

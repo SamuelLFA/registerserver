@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/samuellfa/registerserver/src/models"
+	m "github.com/samuellfa/registerserver/src/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -29,5 +29,5 @@ func ConnectWithDatabase() {
 		log.Fatalln(err)
 	}
 
-	DB.AutoMigrate(&models.Person{})
+	DB.AutoMigrate(&m.Person{})
 }

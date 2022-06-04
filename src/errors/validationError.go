@@ -1,23 +1,27 @@
 package errors
 
 import (
-	"fmt"
 	"net/http"
 )
 
-type ValidationError struct {
-	messages []string
+type ValidationErrorField struct {
+	Field   string `json:"field"`
+	Message string `json:"message"`
 }
 
-func (e *ValidationError) Error() string {
-	return fmt.Sprintf("%q", e.messages)
+type ValidationError struct {
+	messages []ValidationErrorField
+}
+
+func (e *ValidationError) Error() interface{} {
+	return e.messages
 }
 
 func (e *ValidationError) HttpStatus() int {
 	return http.StatusBadRequest
 }
 
-func (e *ValidationError) AddError(err string) {
+func (e *ValidationError) AddError(err ValidationErrorField) {
 	e.messages = append(e.messages, err)
 }
 

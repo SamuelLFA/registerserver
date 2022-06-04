@@ -2,15 +2,15 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/samuellfa/registerserver/src/controllers"
-	"github.com/samuellfa/registerserver/src/database"
-	"github.com/samuellfa/registerserver/src/services"
+	c "github.com/samuellfa/registerserver/src/controllers"
+	d "github.com/samuellfa/registerserver/src/database"
+	s "github.com/samuellfa/registerserver/src/services"
 )
 
 func HandleRequest() {
-	personService := services.NewPersonService(database.DB)
-	personController := controllers.NewPersonController(personService)
-	helloController := controllers.NewHelloController()
+	personService := s.NewPersonService(d.DB)
+	personController := c.NewPersonController(personService)
+	helloController := c.NewHelloController()
 
 	r := gin.Default()
 	r.POST("/person", personController.Create)
