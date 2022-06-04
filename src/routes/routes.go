@@ -10,9 +10,11 @@ import (
 func HandleRequest() {
 	personService := services.NewPersonService(database.DB)
 	personController := controllers.NewPersonController(personService)
+	helloController := controllers.NewHelloController()
 
 	r := gin.Default()
 	r.POST("/person", personController.Create)
+	r.GET("/", helloController.Hello)
 
 	r.Run()
 }
