@@ -1,7 +1,6 @@
 package services
 
 import (
-	"github.com/gin-gonic/gin"
 	dto "github.com/samuellfa/registerserver/src/controllers/dto"
 	e "github.com/samuellfa/registerserver/src/errors"
 	m "github.com/samuellfa/registerserver/src/models"
@@ -16,7 +15,7 @@ func NewPersonService(db *gorm.DB) *PersonService {
 	return &PersonService{db}
 }
 
-func (service *PersonService) Create(request dto.CreatePersonRequest, ctx *gin.Context) (*m.Person, e.APIError) {
+func (service *PersonService) Create(request dto.CreatePersonRequest) (*m.Person, e.APIError) {
 	person := request.ToModel()
 	var validationError e.ValidationError
 
@@ -39,4 +38,22 @@ func (service *PersonService) Create(request dto.CreatePersonRequest, ctx *gin.C
 	}
 
 	return person, nil
+}
+
+func (service *PersonService) FindAll() ([]m.Person, e.APIError) {
+	var people []m.Person
+	if result := service.db.Find(&people); result.Error != nil {
+		return nil, e.NewInternalServerError("something was wrong")
+	}
+
+	return people, nil
+}
+
+func (service *PersonService) Find(id string) (*m.Person, e.APIError) {
+	var person m.Person
+	if result := service.db.First(&person, m.Person{Id: id}); result.Error != nil {
+		return nil, e.NewInternalServerError("something was wrong")
+	}
+
+	return &person, nil
 }

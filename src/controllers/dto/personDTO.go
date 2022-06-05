@@ -15,6 +15,13 @@ type createPersonResponse struct {
 	Email    string `json:"email"`
 }
 
+type findPersonResponse struct {
+	Id       string `json:"id"`
+	Name     string `json:"name"`
+	Document string `json:"document"`
+	Email    string `json:"email"`
+}
+
 func (request *CreatePersonRequest) ToModel() *models.Person {
 	return &models.Person{
 		Name:     request.Name,
@@ -23,11 +30,35 @@ func (request *CreatePersonRequest) ToModel() *models.Person {
 	}
 }
 
-func NewCreatePersonResponse(person models.Person) *createPersonResponse {
-	return &createPersonResponse{
+func NewCreatePersonResponse(person models.Person) createPersonResponse {
+	return createPersonResponse{
 		Id:       person.Id,
 		Name:     person.Name,
 		Document: person.Document,
 		Email:    person.Email,
 	}
+}
+
+func NewFindAllPersonResponse(people []models.Person) []findPersonResponse {
+	var peopleDTO []findPersonResponse
+	for _, person := range people {
+		personDTO := findPersonResponse{
+			Id:       person.Id,
+			Name:     person.Name,
+			Document: person.Document,
+			Email:    person.Email,
+		}
+		peopleDTO = append(peopleDTO, personDTO)
+	}
+	return peopleDTO
+}
+
+func NewFindPersonResponse(person models.Person) findPersonResponse {
+	personDTO := findPersonResponse{
+		Id:       person.Id,
+		Name:     person.Name,
+		Document: person.Document,
+		Email:    person.Email,
+	}
+	return personDTO
 }

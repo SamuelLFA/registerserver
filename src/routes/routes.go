@@ -14,6 +14,8 @@ func HandleRequest() {
 
 	r := gin.Default()
 	r.POST("/person", personController.Create)
+	r.GET("/person", personController.FindAll)
+	r.GET("/person/:id", personController.Find)
 	r.GET("/", helloController.Hello)
 
 	r.Run()

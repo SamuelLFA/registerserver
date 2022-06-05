@@ -29,7 +29,7 @@ func (controller *personController) Create(ctx *gin.Context) {
 		return
 	}
 
-	person, err := controller.service.Create(request, ctx)
+	person, err := controller.service.Create(request)
 	if err != nil {
 		ctx.JSON(err.HttpStatus(), gin.H{
 			"error": err.Error(),
@@ -39,4 +39,38 @@ func (controller *personController) Create(ctx *gin.Context) {
 
 	response := dto.NewCreatePersonResponse(*person)
 	ctx.JSON(http.StatusCreated, response)
+}
+
+func (controller *personController) FindAll(ctx *gin.Context) {
+	people, err := controller.service.FindAll()
+	if err != nil {
+		ctx.JSON(err.HttpStatus(), gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	response := dto.NewFindAllPersonResponse(people)
+	ctx.JSON(http.StatusOK, response)
+}
+
+func (controller *personController) Find(ctx *gin.Context) {
+	id, err := h.GetIdFromContext(ctx)
+	if err != nil {
+		ctx.JSON(err.HttpStatus(), gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	person, err := controller.service.Find(id)
+	if err != nil {
+		ctx.JSON(err.HttpStatus(), gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	response := dto.NewFindPersonResponse(*person)
+	ctx.JSON(http.StatusOK, response)
 }
